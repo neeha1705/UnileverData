@@ -41,7 +41,7 @@ if __name__ == '__main__':
         .option("delimiter", ",") \
         .format("csv") \
         .schema(fin_schema) \
-        .load("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/crime_dataset.csv")
+        .load("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/finances.csv")
 
     fin_df.printSchema()
     fin_df.show()
