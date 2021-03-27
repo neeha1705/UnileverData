@@ -1,0 +1,23 @@
+s3_conf:
+  s3_bucket: kundata
+
+sftp_conf:
+    filetype: csv
+    delimiter: |
+    directory: /home/ubuntu/data
+
+mysql_conf:
+  dbtable: testdb.TRANSACTIONSYNC
+  partition_column: App_Transaction_Id
+  query : "(select * from testdb.TRANSACTIONSYNC where Internal_Member_Id = 'PC7135361') as t"
+
+mongodb_config:
+  database: school
+  collection: students
+
+redshift_conf:
+  filetype: csv
+  delimiter: |
+  dbtable: PUBLIC.TXN_FCT
+  query: SELECT txn_id, create_time, amount, cust_id from PUBLIC.TXN_FCT
+
