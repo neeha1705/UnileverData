@@ -47,27 +47,30 @@ if __name__ == '__main__':
         .load() \
         .withColumn("ins_dt", functions.current_date())
 
-    txn_df2 = spark.read.format("com.springml.spark.sftp")\
+
+
+    txn_df.show()
+
+
+    txn_df.read \
+        .partitionBy("App_Transaction_Id")  \
+        .option("header", "true") \
+        .option("delimiter", "~") \
+        .csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/TransactionSync")\
+        .show()
+
+    print("Sftp data")
+
+ txn_df2 = spark.read.format("com.springml.spark.sftp")\
         .option("host", app_secret["sftp_conf"]["hostname"])\
         .option("port", app_secret["sftp_conf"]["port"])\
         .option("username", app_secret["sftp_conf"]["username"])\
-        .option("pem", os.path.abspath(current_dir + "/../../../../" + app_secret["sftp_conf"]["pem"]))\
+        .option("pem", os.path.abspath(current_dir + "/../../" + app_secret["sftp_conf"]["pem"]))\
         .option("fileType", "csv")\
         .option("delimiter", "|")\
         .load(app_conf["sftp_conf"]["directory"] + "/TransactionSync.csv")
 
-    txn_df.show()
-
-    print("Sftp data")
-
-    txn_df.read \
-        .partitionBy("ins_dt") \
-        .mode("overwrite") \
-        .option("header", "true") \
-        .option("delimiter", "~") \
-        .csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/staging/SB")\
-        .show()
-
+txn_df2.show(5)
 
 
 
