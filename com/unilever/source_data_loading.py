@@ -60,19 +60,14 @@ if __name__ == '__main__':
         .show()
 
     print("Sftp data")
-
- txn_df2 = spark.read.format("com.springml.spark.sftp")\
-        .option("host", app_secret["sftp_conf"]["hostname"])\
-        .option("port", app_secret["sftp_conf"]["port"])\
-        .option("username", app_secret["sftp_conf"]["username"])\
-        .option("pem", os.path.abspath(current_dir + "/../../" + app_secret["sftp_conf"]["pem"]))\
-        .option("fileType", "csv")\
-        .option("delimiter", "|")\
+    txn_df2 = spark.read.format("com.springml.spark.sftp") \
+        .option("host", app_secret["sftp_conf"]["hostname"]) \
+        .option("port", app_secret["sftp_conf"]["port"]) \
+        .option("username", app_secret["sftp_conf"]["username"]) \
+        .option("pem", os.path.abspath(current_dir + "/../../" + app_secret["sftp_conf"]["pem"])) \
+        .option("fileType", "csv") \
+        .option("delimiter", "|") \
         .load(app_conf["sftp_conf"]["directory"] + "/TransactionSync.csv")
-
-txn_df2.show(5)
-
-
-
+    txn_df2.show(5)
 
 # spark-submit --packages "mysql:mysql-connector-java:8.0.15,org.apache.hadoop:hadoop-aws:2.7.4,com.springml:spark-sftp_2.11:1.1.1" com/unilever/source_data_loading.py
