@@ -1,4 +1,5 @@
 from pyspark.sql import SparkSession
+from pyspark.sql import functions
 import yaml
 import os.path
 import utils.aws_utils as ut
@@ -39,19 +40,20 @@ if __name__ == '__main__':
 
     # use the ** operator/un-packer to treat a python dictionary as **kwargs
     print("\nReading data from MySQL DB using SparkSession.read.format(),")
-    txnDF = spark\
+    txn_df = spark\
         .read.format("jdbc")\
         .option("driver", "com.mysql.cj.jdbc.Driver")\
         .options(**jdbc_params)\
-        .load()
+        .load() \
+        .withColumn("ins_dt", functions.current_date())
 
-    txnDF.show()
+    txn_df.show()
 
-    txnDF.write \
+    txn_df.write \
         .partitionBy("id") \
         .mode("overwrite") \
         .option("header", "true") \
         .option("delimiter", "~") \
         .csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/transaction.csv")
 
-# spark-submit --packages "mysql:mysql-connector-java:8.0.15,org.apache.hadoop:hadoop-aws:2.7.4" sql_to_s3.py
+# spark-submit --packages "mysql:mysql-connector-java:8.0.15,org.apache.hadoop:hadoop-aws:2.7.4" source_data_loading.py
