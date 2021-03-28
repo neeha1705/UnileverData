@@ -50,7 +50,7 @@ if __name__ == '__main__':
     txn_df.show()
 
     txn_df.write \
-        .partitionBy("id") \
+        .partitionBy("ins_dt") \
         .mode("overwrite") \
         .option("header", "true") \
         .option("delimiter", "~") \
