@@ -7,7 +7,6 @@ def get_redshift_jdbc_url(redshift_config: dict):
     password = redshift_config["redshift_conf"]["password"]
     return "jdbc:redshift://{}:{}/{}?user={}&password={}".format(host, port, database, username, password)
 
-
 def get_mysql_jdbc_url(mysql_config: dict):
     host = mysql_config["mysql_conf"]["hostname"]
     port = mysql_config["mysql_conf"]["port"]
