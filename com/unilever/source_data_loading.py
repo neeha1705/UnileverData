@@ -52,12 +52,12 @@ if __name__ == '__main__':
     txn_df.show()
 
 
-    txn_df.read \
+    txn_df.write \
+        .mode('overwrite')\
         .partitionBy("App_Transaction_Id")  \
         .option("header", "true") \
         .option("delimiter", "~") \
-        .csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/TransactionSync")\
-        .show()
+        .csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/staging/SB")
 
     print("Sftp data")
     txn_df2 = spark.read.format("com.springml.spark.sftp") \
