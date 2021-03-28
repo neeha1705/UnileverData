@@ -61,7 +61,7 @@ if __name__ == '__main__':
     finance_df.printSchema()
     finance_df.show()
 
-    crime_df \
+    finance_df \
         .repartition(2) \
         .write \
         .partitionBy("id") \
