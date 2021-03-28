@@ -58,12 +58,17 @@ if __name__ == '__main__':
 
     txn_df.show()
 
-    txn_df.write \
+    print("Sftp data")
+
+    txn_df.read \
         .partitionBy("ins_dt") \
         .mode("overwrite") \
         .option("header", "true") \
         .option("delimiter", "~") \
-        .csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/staging/SB")
+        .csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/staging/SB")\
+        .show()
+
+
 
 
 
