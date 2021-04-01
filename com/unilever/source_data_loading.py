@@ -72,6 +72,8 @@ if __name__ == '__main__':
                 .load(sc_conf["sftp_conf"]["directory"] + "/TransactionSync.csv")
             txn_df2.show(5)
 
+
+            print("\n Writing OL data to S3")
             txn_df2.write \
                 .mode('overwrite') \
                 .partitionBy("App_Transaction_Id") \
