@@ -60,7 +60,7 @@ if __name__ == '__main__':
             print("\nWriting SB data to S3 <<")
 
         elif src == "OL":
-            print("\nReading OL data from MySQL DB >>")
+            print("\nReading OL data from sftp >>")
             txn_df2 = spark.read.format("com.springml.spark.sftp") \
                 .option("host", app_secret["sftp_conf"]["hostname"]) \
                 .option("port", app_secret["sftp_conf"]["port"]) \
@@ -68,7 +68,8 @@ if __name__ == '__main__':
                 .option("pem", os.path.abspath(current_dir + "/../../" + app_secret["sftp_conf"]["pem"])) \
                 .option("fileType", "csv") \
                 .option("delimiter", ",") \
-                .load(src_conf["sftp_conf"]["directory"] +src_conf["sftp_conf"]["filename"] )
+                .load(src_conf["sftp_conf"]["directory"] +src_conf["sftp_conf"]["filename"])\
+                .withColumn("ins_dt", functions.current_date())
             txn_df2.show(5)
 
 
