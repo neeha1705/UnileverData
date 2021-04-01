@@ -1,14 +1,21 @@
+source_data_list:
+  - SB
+
+SB:
+  mysql_conf:
+    dbtable: testdb1.TRANSACTIONSYNC
+    partition_column: App_Transaction_Id
+
+OL:
+  sftp_conf:
+      filetype: csv
+      delimiter: ','
+      directory: /home/ubuntu/
+
 s3_conf:
   s3_bucket: kundata
 
-sftp_conf:
-    filetype: csv
-    delimiter: ','
-    directory: /home/ubuntu/
 
-mysql_conf:
-  dbtable: testdb1.TRANSACTIONSYNC
-  partition_column: App_Transaction_Id
 
 mongodb_config:
   database: school

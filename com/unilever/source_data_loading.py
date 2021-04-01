@@ -27,47 +27,48 @@ if __name__ == '__main__':
     secret = open(app_secrets_path)
     app_secret = yaml.load(secret, Loader=yaml.FullLoader)
 
-    jdbc_params = {"url": ut.get_mysql_jdbc_url(app_secret),
-                  "lowerBound": "1",
-                  "upperBound": "100",
-                  "dbtable": app_conf["mysql_conf"]["dbtable"],
-                  "numPartitions": "2",
-                  "partitionColumn": app_conf["mysql_conf"]["partition_column"],
-                  "user": app_secret["mysql_conf"]["username"],
-                  "password": app_secret["mysql_conf"]["password"]
-                   }
-    # print(jdbcParams)
+    src_list = app_conf["source_data_list"]
 
-    # use the ** operator/un-packer to treat a python dictionary as **kwargs
-    print("\nReading data from MySQL DB using SparkSession.read.format(),")
-    txn_df = spark\
-        .read.format("jdbc")\
-        .option("driver", "com.mysql.cj.jdbc.Driver")\
-        .options(**jdbc_params)\
-        .load() \
-        .withColumn("ins_dt", functions.current_date())
+    for src in src_list:
+        src_conf = app_conf[src]
+        if src == "SB":
+            print("\nReading SB data from MySQL DB >>")
+            jdbc_params = {"url": ut.get_mysql_jdbc_url(app_secret),
+                          "lowerBound": "1",
+                          "upperBound": "100",
+                          "dbtable": src_conf["mysql_conf"]["dbtable"],
+                          "numPartitions": "2",
+                          "partitionColumn": src_conf["mysql_conf"]["partition_column"],
+                          "user": app_secret["mysql_conf"]["username"],
+                          "password": app_secret["mysql_conf"]["password"]
+                           }
+            txn_df = spark\
+                .read.format("jdbc")\
+                .option("driver", "com.mysql.cj.jdbc.Driver")\
+                .options(**jdbc_params)\
+                .load() \
+                .withColumn("ins_dt", functions.current_date())
+            txn_df.show()
 
+            txn_df.write \
+                .mode('overwrite')\
+                .partitionBy("App_Transaction_Id")  \
+                .option("header", "true") \
+                .option("delimiter", "~") \
+                .csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/staging/SB")
 
+            print("\nWriting SB data to S3 <<")
 
-    txn_df.show()
-
-
-    txn_df.write \
-        .mode('overwrite')\
-        .partitionBy("App_Transaction_Id")  \
-        .option("header", "true") \
-        .option("delimiter", "~") \
-        .csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/staging/SB")
-
-    print("Sftp data")
-    txn_df2 = spark.read.format("com.springml.spark.sftp") \
-        .option("host", app_secret["sftp_conf"]["hostname"]) \
-        .option("port", app_secret["sftp_conf"]["port"]) \
-        .option("username", app_secret["sftp_conf"]["username"]) \
-        .option("pem", os.path.abspath(current_dir + "/../../" + app_secret["sftp_conf"]["pem"])) \
-        .option("fileType", "csv") \
-        .option("delimiter", ",") \
-        .load(app_conf["sftp_conf"]["directory"] + "/TransactionSync.csv")
-    txn_df2.show(5)
+        elif src == "OL":
+            print("Sftp data")
+            txn_df2 = spark.read.format("com.springml.spark.sftp") \
+                .option("host", app_secret["sftp_conf"]["hostname"]) \
+                .option("port", app_secret["sftp_conf"]["port"]) \
+                .option("username", app_secret["sftp_conf"]["username"]) \
+                .option("pem", os.path.abspath(current_dir + "/../../" + app_secret["sftp_conf"]["pem"])) \
+                .option("fileType", "csv") \
+                .option("delimiter", ",") \
+                .load(app_conf["sftp_conf"]["directory"] + "/TransactionSync.csv")
+            txn_df2.show(5)
 
 # spark-submit --packages "mysql:mysql-connector-java:8.0.15,org.apache.hadoop:hadoop-aws:2.7.4,com.springml:spark-sftp_2.11:1.1.1" com/unilever/source_data_loading.py
