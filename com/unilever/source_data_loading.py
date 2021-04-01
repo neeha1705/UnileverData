@@ -67,7 +67,7 @@ if __name__ == '__main__':
                 .option("username", app_secret["sftp_conf"]["username"]) \
                 .option("pem", os.path.abspath(current_dir + "/../../" + app_secret["sftp_conf"]["pem"])) \
                 .option("fileType", "csv") \
-                .option("delimiter", ",") \
+                .option("delimiter", "|") \
                 .load(src_conf["sftp_conf"]["directory"] +src_conf["sftp_conf"]["filename"])\
                 .withColumn("ins_dt", functions.current_date())
             txn_df2.show(5)
@@ -77,7 +77,7 @@ if __name__ == '__main__':
                 .mode('overwrite') \
                 .partitionBy("INS_DT") \
                 .option("header", "true") \
-                .option("delimiter", ",") \
+                .option("delimiter", "~") \
                 .csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/staging/OL")
 
             print("\nWriting OL data to S3 <<")
