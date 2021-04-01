@@ -1,5 +1,5 @@
 source_data_list:
-  - SB
+  - OL
 
 SB:
   mysql_conf:

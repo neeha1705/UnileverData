@@ -71,4 +71,13 @@ if __name__ == '__main__':
                 .load(app_conf["sftp_conf"]["directory"] + "/TransactionSync.csv")
             txn_df2.show(5)
 
+            txn_df2.write \
+                .mode('overwrite') \
+                .partitionBy("App_Transaction_Id") \
+                .option("header", "true") \
+                .option("delimiter", ",") \
+                .csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/staging/OL")
+
+
+
 # spark-submit --packages "mysql:mysql-connector-java:8.0.15,org.apache.hadoop:hadoop-aws:2.7.4,com.springml:spark-sftp_2.11:1.1.1" com/unilever/source_data_loading.py
