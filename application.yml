@@ -3,8 +3,8 @@ s3_conf:
 
 sftp_conf:
     filetype: csv
-    delimiter: |
-    directory: /home/ubuntu
+    delimiter: ,
+    directory: /home/ubuntu/
 
 mysql_conf:
   dbtable: testdb1.TRANSACTIONSYNC
