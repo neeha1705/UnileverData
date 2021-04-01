@@ -73,13 +73,14 @@ if __name__ == '__main__':
             txn_df2.show(5)
 
 
-            print("\n Writing OL data to S3")
             txn_df2.write \
                 .mode('overwrite') \
                 .partitionBy("App_Transaction_Id") \
                 .option("header", "true") \
                 .option("delimiter", ",") \
                 .csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/staging/OL")
+
+            print("\n Writing OL data to S3")
 
 
 
