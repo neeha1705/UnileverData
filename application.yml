@@ -3,7 +3,7 @@ s3_conf:
 
 sftp_conf:
     filetype: csv
-    delimiter: ,
+    delimiter: ','
     directory: /home/ubuntu/
 
 mysql_conf:
