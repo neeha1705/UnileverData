@@ -9,7 +9,7 @@ SB:
 OL:
   sftp_conf:
       filetype: csv
-      delimiter: ','
+      delimiter: |
       directory: /home/ubuntu/
       filename: receipts_delta_GBR_14_10_2017.csv
 
