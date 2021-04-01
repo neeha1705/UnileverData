@@ -60,6 +60,7 @@ if __name__ == '__main__':
             print("\nWriting SB data to S3 <<")
 
         elif src == "OL":
+            sc_conf = app_conf[src]
             print("Sftp data")
             txn_df2 = spark.read.format("com.springml.spark.sftp") \
                 .option("host", app_secret["sftp_conf"]["hostname"]) \
@@ -68,7 +69,7 @@ if __name__ == '__main__':
                 .option("pem", os.path.abspath(current_dir + "/../../" + app_secret["sftp_conf"]["pem"])) \
                 .option("fileType", "csv") \
                 .option("delimiter", ",") \
-                .load(app_conf["sftp_conf"]["directory"] + "/TransactionSync.csv")
+                .load(sc_conf["sftp_conf"]["directory"] + "/TransactionSync.csv")
             txn_df2.show(5)
 
             txn_df2.write \
