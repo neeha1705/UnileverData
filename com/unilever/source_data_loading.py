@@ -66,7 +66,7 @@ if __name__ == '__main__':
         .option("username", app_secret["sftp_conf"]["username"]) \
         .option("pem", os.path.abspath(current_dir + "/../../" + app_secret["sftp_conf"]["pem"])) \
         .option("fileType", "csv") \
-        .option("delimiter", "|") \
+        .option("delimiter", ",") \
         .load(app_conf["sftp_conf"]["directory"] + "/TransactionSync.csv")
     txn_df2.show(5)
 
