@@ -52,7 +52,7 @@ if __name__ == '__main__':
 
             txn_df.write \
                 .mode('overwrite')\
-                .partitionBy("App_Transaction_Id")  \
+                .partitionBy("INS_DT")  \
                 .option("header", "true") \
                 .option("delimiter", "~") \
                 .csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/staging/SB")
@@ -60,7 +60,7 @@ if __name__ == '__main__':
             print("\nWriting SB data to S3 <<")
 
         elif src == "OL":
-            print("Sftp data")
+            print("\nReading OL data from MySQL DB >>")
             txn_df2 = spark.read.format("com.springml.spark.sftp") \
                 .option("host", app_secret["sftp_conf"]["hostname"]) \
                 .option("port", app_secret["sftp_conf"]["port"]) \
@@ -68,18 +68,18 @@ if __name__ == '__main__':
                 .option("pem", os.path.abspath(current_dir + "/../../" + app_secret["sftp_conf"]["pem"])) \
                 .option("fileType", "csv") \
                 .option("delimiter", ",") \
-                .load(src_conf["sftp_conf"]["directory"] + "/TransactionSync.csv")
+                .load(src_conf["sftp_conf"]["directory"] +src_conf["sftp_conf"]["filename"] )
             txn_df2.show(5)
 
 
             txn_df2.write \
                 .mode('overwrite') \
-                .partitionBy("App_Transaction_Id") \
+                .partitionBy("INS_DT") \
                 .option("header", "true") \
                 .option("delimiter", ",") \
                 .csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/staging/OL")
 
-            print("\n Writing OL data to S3")
+            print("\nWriting OL data to S3 <<")
 
 
 
