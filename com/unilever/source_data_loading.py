@@ -57,7 +57,7 @@ if __name__ == '__main__':
                 .option("delimiter", "~") \
                 .csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/staging/SB")
 
-            print("\nWriting SB data to S3 <<")
+            print("\nWriting SB data to S3 .... <<")
 
         elif src == "OL":
             print("\nReading OL data from sftp >>")
