@@ -65,7 +65,6 @@ if __name__ == '__main__':
                 .option("host", app_secret["sftp_conf"]["hostname"]) \
                 .option("port", app_secret["sftp_conf"]["port"]) \
                 .option("username", app_secret["sftp_conf"]["username"]) \
-                #.option("pem", os.path.abspath(current_dir + "/../../" + app_secret["sftp_conf"]["pem"])) \
                 .option("fileType", "csv") \
                 .option("delimiter", "|") \
                 .load(src_conf["sftp_conf"]["directory"] +src_conf["sftp_conf"]["filename"])\
@@ -85,3 +84,4 @@ if __name__ == '__main__':
 
 
 # spark-submit --packages "mysql:mysql-connector-java:8.0.15,org.apache.hadoop:hadoop-aws:2.7.4,com.springml:spark-sftp_2.11:1.1.1" /unilever/source_data_loading.py
+#.option("pem", os.path.abspath(current_dir + "/../../" + app_secret["sftp_conf"]["pem"])) \
