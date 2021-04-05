@@ -3,7 +3,7 @@ source_data_list:
 
 SB:
   mysql_conf:
-    dbtable: testdb1.TRANSACTIONSYNC
+    dbtable: test1.TRANSACTIONSYNC
     partition_column: App_Transaction_Id
 
 OL:
@@ -14,9 +14,7 @@ OL:
       filename: receipts_delta_GBR_14_10_2017.csv
 
 s3_conf:
-  s3_bucket: drishy1122
-
-
+  s3_bucket: drishy12
 
 mongodb_config:
   database: school
