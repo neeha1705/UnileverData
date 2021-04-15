@@ -14,7 +14,7 @@ OL:
       filename: receipts_delta_GBR_14_10_2017.csv
 
 s3_conf:
-  s3_bucket: drishy12
+  s3_bucket: pysparkbuck1234
 
 mongodb_config:
   database: school
