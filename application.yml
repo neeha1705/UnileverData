@@ -3,7 +3,7 @@ source_data_list:
 
 SB:
   mysql_conf:
-    dbtable: testdb1.TRANSACTIONSYNC
+    dbtable: testdb.TRANSACTIONSYNC
     partition_column: App_Transaction_Id
 
 OL:
